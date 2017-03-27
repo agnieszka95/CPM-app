@@ -1,0 +1,25 @@
+﻿<Window x:Class="CPM_app.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CPM_app"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <DockPanel x:Name="ControlsPanel" HorizontalAlignment="Left" Height="299" LastChildFill="False" Margin="10,10,0,0" VerticalAlignment="Top" Width="129">
+            <ListView x:Name="listView" DockPanel.Dock="Top" Height="281">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn/>
+                    </GridView>
+                </ListView.View>
+                <Button x:Name="NewAction" Content="Utwórz czynność" Width="119" Click="NewAction_Click"/>
+                <Button x:Name="NewConnection" Content="Nowe Połączenie" Width="119" Click="NewConnection_Click"/>
+            </ListView>
+        </DockPanel>
+        <DockPanel x:Name="DiagramPanel" HorizontalAlignment="Left" Height="189" LastChildFill="False" Margin="144,10,0,0" VerticalAlignment="Top" Width="350"/>
+        <DockPanel x:Name="ChartPanel" HorizontalAlignment="Left" Height="105" LastChildFill="False" Margin="144,204,0,0" VerticalAlignment="Top" Width="363"/>
+
+    </Grid>
+</Window>
