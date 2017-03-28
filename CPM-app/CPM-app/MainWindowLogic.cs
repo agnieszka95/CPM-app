@@ -89,37 +89,5 @@ namespace CPM_app
             UpdateChart();
             //TODO: Delete action rectangle and remove it from graph on Click+Delete
         }
-        /**
-         * EditConnectionProperties
-         * Displays connection edit dialog
-         */
-        private void EditConnectionProperties(object connection)
-        {
-            throw new NotImplementedException();
-        }
-        /**
-         * EditActionProperties
-         * Displays action edit dialog
-         */
-        private void EditActionProperties(object action)
-        {
-            throw new NotImplementedException();
-        }
-        /**
-         * InitializeActionProperties
-         * Displays action edit dialog
-         */
-        private void InitializeActionProperties(object action)
-        {
-            throw new NotImplementedException();
-        }
-        /**
-         * InitializeConnectionProperties
-         * Displays connection edit dialog
-         */
-        private void InitializeConnectionProperties(object connection)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
