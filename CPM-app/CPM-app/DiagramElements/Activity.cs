@@ -19,8 +19,8 @@ namespace CPM_app.DiagramElements
         private string name;
         private double duration;
         private double criticalPathLength;
-        public static readonly Activity Start=new Activity("START",0.0);
-        public static readonly Activity End= new Activity("END", 0.0);
+        public static readonly Activity Start=new Activity("START");
+        public static readonly Activity End= new Activity("END");
         public Activity()
         { 
             id = topId++;
@@ -28,10 +28,15 @@ namespace CPM_app.DiagramElements
             criticalPaths = new List<IGraphEdge>();
             loosePaths = new List<IGraphEdge>();
         }
-        private Activity(string name,double duration):this()
+        public Activity(string name,double duration):this()
+        {
+            this.SetName(name);
+            this.SetDuration(duration);
+        }
+        private Activity(string name):this()
         {
             this.name = name;
-            this.duration = duration;
+            this.duration = 0.0;
         }
         public double Analyze()
         {
@@ -97,27 +102,27 @@ namespace CPM_app.DiagramElements
             return duration;
         }
 
-        int IGraphNode.GetId()
+        public int GetId()
         {
             return id;
         }
 
-        string IGraphNode.GetName()
+        public string GetName()
         {
             return name;
         }
 
-        IReadOnlyList<IGraphEdge> IGraphNode.GetRegisteredConnections()
+        public IReadOnlyList<IGraphEdge> GetRegisteredConnections()
         {
             return registeredEdges.AsReadOnly();
         }
 
-        bool IGraphNode.IsRegistered(IGraphEdge edge)
+        public bool IsRegistered(IGraphEdge edge)
         {
             return registeredEdges.Contains(edge);
         }
 
-        void IGraphNode.MarkAsCritical()
+        public void MarkAsCritical()
         {
             foreach (IGraphEdge edge in criticalPaths)
                 edge.GetEndNode().MarkAsCritical();
@@ -126,47 +131,47 @@ namespace CPM_app.DiagramElements
             //end TODO
         }
 
-        void IGraphNode.MarkAsLoose()
+        public void MarkAsLoose()
         {
             //TODO: Implement color change on marking as loose action
             throw new NotImplementedException();
             //end TODO
         }
 
-        void IGraphNode.MarkAsNormal()
+        public void MarkAsNormal()
         {
             //TODO: Implement color change on marking as normal action
             throw new NotImplementedException();
             //end TODO
         }
 
-        void IGraphNode.RegisterConnection(IGraphEdge edge)
+        public void RegisterConnection(IGraphEdge edge)
         {
             registeredEdges.Add(edge);
         }
 
-        void IGraphNode.SetDuration(double duration)
+        public void SetDuration(double duration)
         {
             if (duration >= 0.0)
                 this.duration = duration;
             else throw new Exception("Activity duration cannot be negative");
         }
 
-        void IGraphNode.SetName(string name)
+        public void SetName(string name)
         {
             if (name != "START" && name != "END")
                 this.name = name;
             else throw new Exception(string.Concat("Name ", name, " is restricted. Please choose another activity's name."));
         }
 
-        void IGraphNode.UnregisterAll()
+        public void UnregisterAll()
         {
             registeredEdges.Clear();
             criticalPaths.Clear();
             loosePaths.Clear();
         }
 
-        void IGraphNode.UnregisterConnection(IGraphEdge edge)
+        public void UnregisterConnection(IGraphEdge edge)
         {
             while(registeredEdges.Remove(edge));
             while(criticalPaths.Remove(edge));
