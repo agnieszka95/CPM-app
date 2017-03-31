@@ -13,12 +13,18 @@ namespace CPM_app.Graph.Concrete
         List<IGraphNode> nodes;
         List<IGraphEdge> edges;
         private static readonly IGraph onlyInstance=new Graph();
+        private double totalDuration;
         private Graph()
         {
             nodes = new List<IGraphNode>();
             nodes.Add(Activity.Start);
             nodes.Add(Activity.End);
             edges = new List<IGraphEdge>();
+            totalDuration = 0.0;
+        }
+        public double GetTotalDuration()
+        {
+            return totalDuration;
         }
         public void AddEdge(IGraphEdge edge)
         {
@@ -34,7 +40,7 @@ namespace CPM_app.Graph.Concrete
         public void Analyze()
         {
             Clear();
-            Activity.Start.AsIGraphNode().Analyze();
+            totalDuration=Activity.Start.AsIGraphNode().Analyze();
             throw new NotImplementedException();
         }
 
@@ -52,6 +58,7 @@ namespace CPM_app.Graph.Concrete
         {
             while(edges.Remove(edge));
             edge.Destroy();
+            Analyze();
         }
 
         public void RemoveNode(IGraphNode node)
@@ -64,6 +71,7 @@ namespace CPM_app.Graph.Concrete
             }
             while(nodes.Remove(node));
             node.Destroy();
+            Analyze();
         }
 
         /**
@@ -77,7 +85,9 @@ namespace CPM_app.Graph.Concrete
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            totalDuration = 0.0;
+            foreach (IGraphNode node in nodes)
+                node.Clear();
         }
     }
 }
