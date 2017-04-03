@@ -1,24 +1,28 @@
 ﻿using CPM_app.Graph.Abstract;
+using CPM_app.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace CPM_app.DiagramElements
 {
     //TODO: Inherit from chosen WPF class
     //TODO: Implement methods throwing NotImplementedException
-    class Activity : IGraphNode
+    public class Activity : IGraphNode
     {
         private static int topId=0;
         private readonly int id;
         private List<IGraphEdge> registeredEdges;
         private List<IGraphEdge> criticalPaths;
         private List<IGraphEdge> loosePaths;
-        private string name;
-        private double duration;
-        private double criticalPathLength;
+        private int criticalPathLength;
+        private string actionName;
+        private int duration;
+        protected Label label { get; set; }
         public static readonly Activity Start=new Activity("START");
         public static readonly Activity End= new Activity("END");
         public Activity()
@@ -28,35 +32,40 @@ namespace CPM_app.DiagramElements
             criticalPaths = new List<IGraphEdge>();
             loosePaths = new List<IGraphEdge>();
         }
-        public Activity(string name,double duration):this()
+        public Activity(string name,int duration):this()
         {
             this.SetName(name);
             this.SetDuration(duration);
         }
         private Activity(string name):this()
         {
-            this.name = name;
-            this.duration = 0.0;
+            this.actionName=name;
+            this.duration = 0;
         }
-        public double Analyze()
+        public int Analyze()
         {
-            if (this.Equals(Start))
-                this.AsIGraphNode().Clear();
-            else if (this.Equals(End))
+            this.AsIGraphNode().Clear();
+            if(this.Equals(End))
             {
-                criticalPathLength = 0.0;
+                criticalPathLength = 0;
                 return criticalPathLength;
             }
             if (criticalPaths.Any())
                 return criticalPathLength;
-            criticalPathLength = -1.0;
+            criticalPathLength = -1;
             foreach (IGraphEdge edge in registeredEdges)
             {
                 if (edge.GetStartNode().Equals(this))
                 {
                     IGraphNode node = edge.GetEndNode();
-                    double candidate = node.Analyze();
-                    if (candidate > criticalPathLength)
+                    int candidate = node.Analyze();
+                    node.MarkAsNormal();
+                    if (candidate < 0)
+                    {
+                        node.MarkAsLoose();
+                        loosePaths.Add(edge);
+                    }
+                    else if (candidate > criticalPathLength)
                     {
                         criticalPathLength = candidate;
                         criticalPaths.Clear();
@@ -66,23 +75,26 @@ namespace CPM_app.DiagramElements
                     {
                         criticalPaths.Add(edge);
                     }
-                    else if (candidate < 0.0)
-                    {
-                        node.MarkAsLoose();
-                        loosePaths.Add(edge);
-                    }
 
                 }
             }
-            if (this.Equals(Start))
+            if (criticalPathLength < 0)
+                return criticalPathLength;
+            if (this.Equals(Start)&&this.criticalPathLength>=0)
                 this.AsIGraphNode().MarkAsCritical();
-            return criticalPathLength+duration;
+            return criticalPathLength+ (int)duration;
         }
+
+        public int GetCriticalPath()
+        {
+            return criticalPathLength;
+        }
+
         public void Clear()
         {
             criticalPaths.Clear();
             loosePaths.Clear();
-            AsIGraphNode().MarkAsNormal();
+            AsIGraphNode().MarkAsDetached();
         }
 
         public void Destroy()
@@ -97,9 +109,9 @@ namespace CPM_app.DiagramElements
             registeredEdges.Clear();
         }
 
-        public double GetDuration()
+        public int GetDuration()
         {
-            return duration;
+            return (int)duration;
         }
 
         public int GetId()
@@ -109,7 +121,7 @@ namespace CPM_app.DiagramElements
 
         public string GetName()
         {
-            return name;
+            return actionName;
         }
 
         public IReadOnlyList<IGraphEdge> GetRegisteredConnections()
@@ -127,22 +139,32 @@ namespace CPM_app.DiagramElements
             foreach (IGraphEdge edge in criticalPaths)
                 edge.GetEndNode().MarkAsCritical();
             //TODO: Implement color change on marking as critical action
-            throw new NotImplementedException();
+            if(label!=null)
+            label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0xCC, 0xCC));
             //end TODO
         }
 
         public void MarkAsLoose()
         {
             //TODO: Implement color change on marking as loose action
-            throw new NotImplementedException();
+            if (label != null)
+                label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xCC, 0xFF, 0xCC));
             //end TODO
         }
 
         public void MarkAsNormal()
         {
             //TODO: Implement color change on marking as normal action
-            throw new NotImplementedException();
+            if (label != null)
+                label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xCC, 0xCC, 0xFF));
             //end TODO
+        }
+
+        public void MarkAsDetached()
+        {
+            if (label != null)
+                label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xCC, 0xCC, 0xCC));
+
         }
 
         public void RegisterConnection(IGraphEdge edge)
@@ -150,17 +172,17 @@ namespace CPM_app.DiagramElements
             registeredEdges.Add(edge);
         }
 
-        public void SetDuration(double duration)
+        public void SetDuration(int duration)
         {
-            if (duration >= 0.0)
-                this.duration = duration;
+            if (duration >= 0)
+                this.duration=duration;
             else throw new Exception("Activity duration cannot be negative");
         }
 
         public void SetName(string name)
         {
             if (name != "START" && name != "END")
-                this.name = name;
+                this.actionName = name;
             else throw new Exception(string.Concat("Name ", name, " is restricted. Please choose another activity's name."));
         }
 
@@ -180,6 +202,15 @@ namespace CPM_app.DiagramElements
         public IGraphNode AsIGraphNode()
         {
             return this;
+        }
+        public Label GetLabel()
+        {
+            return label;
+        }
+        public void SetLabel(Label label)
+        {
+            this.label = label;
+
         }
     }
 }

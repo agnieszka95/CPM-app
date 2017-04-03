@@ -1,14 +1,16 @@
 ﻿using CPM_app.Graph.Abstract;
+using CPM_app.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace CPM_app.DiagramElements
 {
     //TODO: Inherit from chosen WPF class
-    class Connection : IGraphEdge
+    public class Connection :IGraphEdge
     {
         private readonly IGraphNode startNode;
         private readonly IGraphNode endNode;

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace CPM_app.Graph.Abstract
 {
-    interface IGraphNode
+    public interface IGraphNode
     {
         /**
          * MarkAsCritical();
@@ -23,6 +24,11 @@ namespace CPM_app.Graph.Abstract
          * Change node pane's color if neither this node nor it's children are connected to Stop node
          */
         void MarkAsLoose();
+        /**
+         * MarkAsDetached();
+         * Node color for new connections
+         */
+        void MarkAsDetached();
         /**
          * RegisterConnection(IGraphEdge edge)
          * Add given edge to internal IGraphEdge list
@@ -52,11 +58,18 @@ namespace CPM_app.Graph.Abstract
          * Analyze()
          * Analyzes Node and it's children to find critical sub-path(s) and loose ends, returns maximum total duration
          */
-        double Analyze();
+        int Analyze();
         /**
-         * Clear()
-         * Removes all data from previous analysis
+         * GetLabel()
+         * Retrieve label associated with given node
          */
+        Label GetLabel();
+        int GetCriticalPath();
+
+        /**
+        * Clear()
+        * Removes all data from previous analysis
+        */
         void Clear();
         /**
          * Destroy()
@@ -72,7 +85,7 @@ namespace CPM_app.Graph.Abstract
          * GetDuration()
          * Get node's duration
          */
-        double GetDuration();
+        int GetDuration();
         /**
          * GetName()
          * Get node's name
@@ -87,6 +100,6 @@ namespace CPM_app.Graph.Abstract
          * SetDuration(double duration)
          * Set node's name
          */
-        void SetDuration(double duration);
+        void SetDuration(int duration);
     }
 }

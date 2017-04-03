@@ -5,22 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace CPM_app.Graph.Concrete
 {
-    class Graph : IGraph
+    public class Graph : IGraph
     {
         List<IGraphNode> nodes;
         List<IGraphEdge> edges;
-        private static readonly IGraph onlyInstance=new Graph();
+        private static IGraph onlyInstance=new Graph();
         private double totalDuration;
+        private Label pathLabel;
+
         private Graph()
         {
             nodes = new List<IGraphNode>();
             nodes.Add(Activity.Start);
             nodes.Add(Activity.End);
             edges = new List<IGraphEdge>();
-            totalDuration = 0.0;
+            totalDuration = 0;
         }
         public double GetTotalDuration()
         {
@@ -41,7 +44,16 @@ namespace CPM_app.Graph.Concrete
         {
             Clear();
             totalDuration=Activity.Start.AsIGraphNode().Analyze();
-            throw new NotImplementedException();
+            UpdateLabel();
+            //throw new NotImplementedException();
+        }
+
+        private void UpdateLabel()
+        {
+            if(pathLabel!=null)
+            {
+                pathLabel.Content = totalDuration.ToString();
+            }
         }
 
         public IReadOnlyList<IGraphEdge> GetEdges()
@@ -88,6 +100,16 @@ namespace CPM_app.Graph.Concrete
             totalDuration = 0.0;
             foreach (IGraphNode node in nodes)
                 node.Clear();
+        }
+
+        public IGraphNode ForId(int value)
+        {
+            return nodes.Find(x => x.GetId() == value);
+        }
+
+        public void BindToLabel(Label criticalPath)
+        {
+            this.pathLabel = criticalPath;
         }
     }
 }

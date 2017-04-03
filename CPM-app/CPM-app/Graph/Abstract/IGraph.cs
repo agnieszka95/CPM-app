@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace CPM_app.Graph.Abstract
 {
-    interface IGraph
+    public interface IGraph
     {
         /**
          * AddNode(IGraphNode node)
@@ -28,10 +29,12 @@ namespace CPM_app.Graph.Abstract
          * Remove edge from the graph
          */
         void RemoveEdge(IGraphEdge edge);
+        void BindToLabel(Label criticalPath);
+
         /**
-         * Analyze()
-         * Run CPM analysis on the graph
-         */
+* Analyze()
+* Run CPM analysis on the graph
+*/
         void Analyze();
         /**
          * Clear()
@@ -48,5 +51,6 @@ namespace CPM_app.Graph.Abstract
          * Get all graph's nodes
          */
         IReadOnlyList<IGraphNode> GetNodes();
+        IGraphNode ForId(int value);
     }
 }

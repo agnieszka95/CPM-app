@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CPM_app.Graph.Abstract
 {
-    interface IGraphEdge
+    public interface IGraphEdge
     {
         /**
          * GetStartNode()
