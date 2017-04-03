@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CPM_app"
-        xmlns:Windows="clr-namespace:CPM_app.Windows" x:Class="CPM_app.MainWindow"
+        xmlns:Windows="clr-namespace:CPM_app" x:Class="CPM_app.MainWindow"
         xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">

@@ -1,5 +1,4 @@
 ﻿using CPM_app.Graph.Abstract;
-using CPM_app.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -140,7 +139,7 @@ namespace CPM_app.DiagramElements
                 edge.GetEndNode().MarkAsCritical();
             //TODO: Implement color change on marking as critical action
             if(label!=null)
-            label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0xCC, 0xCC));
+            label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x88, 0x88));
             //end TODO
         }
 
@@ -148,7 +147,7 @@ namespace CPM_app.DiagramElements
         {
             //TODO: Implement color change on marking as loose action
             if (label != null)
-                label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xCC, 0xFF, 0xCC));
+                label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x88, 0xFF, 0x88));
             //end TODO
         }
 
@@ -156,14 +155,14 @@ namespace CPM_app.DiagramElements
         {
             //TODO: Implement color change on marking as normal action
             if (label != null)
-                label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xCC, 0xCC, 0xFF));
+                label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x88, 0x88, 0xff));
             //end TODO
         }
 
         public void MarkAsDetached()
         {
             if (label != null)
-                label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xCC, 0xCC, 0xCC));
+                label.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x88, 0x88, 0x88));
 
         }
 
