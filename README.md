@@ -1,2 +1,2 @@
 # CPM-app
-Aplikacja do tworzenia diagramów sieciowych i analizy metodą CPM
+An application for creating network diagrams and analyzing using the CPM method.
